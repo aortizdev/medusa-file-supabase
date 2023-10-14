@@ -1,6 +1,7 @@
 import { createReadStream } from 'fs';
 import { FileService } from 'medusa-interfaces';
 import { StorageClient } from '@supabase/storage-js';
+import { parse } from 'path';
 
 interface Options {
   project_ref: string;
@@ -34,9 +35,19 @@ class SupabaseService extends FileService {
 
   // @ts-ignore
   async upload(file: { path: string; originalname: string }) {
+    const opts = {
+      duplex: 'half',
+      contentType: 'text/plain',
+      upsert: true
+    }
+    const parsedFilename = parse(file.originalname)
+    const filePath = `uploads/${parsedFilename.base}`
+    if (parsedFilename.ext.endsWith('webp')) {
+      opts.contentType = `image/${parsedFilename.ext.replace('.', '')}`
+    }
     const { data, error } = await this.storageClient()
       .from(this.bucket_name)
-      .upload(file.path, createReadStream(file.path), { duplex: "half" });
+      .upload(filePath, createReadStream(file.path), opts);
 
     if (error) {
       console.log(error);
