@@ -42,7 +42,7 @@ class SupabaseService extends FileService {
     }
     const parsedFilename = parse(file.originalname)
     const filePath = `uploads/${parsedFilename.base}`
-    if (parsedFilename.ext.endsWith('webp')) {
+    if (parsedFilename.ext.endsWith('webp') || parsedFilename.ext.endsWith('jpg') || parsedFilename.ext.endsWith('jpeg')) {
       opts.contentType = `image/${parsedFilename.ext.replace('.', '')}`
     }
     const { data, error } = await this.storageClient()

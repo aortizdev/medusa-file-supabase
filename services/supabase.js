@@ -59,7 +59,7 @@ var SupabaseService = /*#__PURE__*/function (_FileService) {
                 };
                 parsedFilename = (0, _path.parse)(file.originalname);
                 filePath = "uploads/".concat(parsedFilename.base);
-                if (parsedFilename.ext.endsWith('webp')) {
+                if (parsedFilename.ext.endsWith('webp') || parsedFilename.ext.endsWith('jpg') || parsedFilename.ext.endsWith('jpeg')) {
                   opts.contentType = "image/".concat(parsedFilename.ext.replace('.', ''));
                 }
                 _context.next = 6;
